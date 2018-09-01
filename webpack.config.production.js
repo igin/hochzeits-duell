@@ -1,7 +1,8 @@
 /* eslint-disable */
 
-var path = require("path");
-var webpack = require("webpack");
+const path = require("path");
+const webpack = require("webpack");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   entry: [
@@ -9,9 +10,9 @@ module.exports = {
     "./index"
   ],
   output: {
-    path: path.join(__dirname, "dist"),
+    path: path.join(__dirname, "/docs/"),
     filename: "bundle.js",
-    publicPath: "/dist/"
+    publicPath: "/"
   },
   plugins: [
     new webpack.DefinePlugin({
@@ -23,6 +24,9 @@ module.exports = {
       compressor: {
         warnings: false
       }
+    }),
+    new HtmlWebpackPlugin({
+      template: './index.html'
     })
   ],
   module: {
