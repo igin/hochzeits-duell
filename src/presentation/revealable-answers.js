@@ -1,16 +1,9 @@
 import React from "react";
-import { List, ListItem } from "spectacle";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 
+
 export class RevealableAnswers extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      revealedAnswers: []
-    };
-  }
-
   render() {
     const {
       answers,
@@ -46,7 +39,7 @@ export class RevealableAnswers extends React.Component {
               const revealed = aPlayerHasSelected || revealedAnswers[answerIndex];
 
               return (
-                <tr key={answerIndex} className={revealed ? "visible" : "" }>
+                <tr key={answerIndex} className={revealed ? "visible" : ""}>
                   <td onClick={() => toggleRevealAnswer(answerIndex)}>Reveal</td>
                   <td>{answerIndex + 1}</td>
                   <td><AnswerTitle>{answer.title}</AnswerTitle></td>
@@ -67,40 +60,17 @@ export class RevealableAnswers extends React.Component {
         </tbody>
       </table>
     );
-
-
-    // return (
-    //
-    //
-    //
-    //
-    //   <List>
-    //     {
-    //       answers.map((answer, index) => {
-    //         const isRevealed = this.state.revealedAnswers.indexOf(index) !== -1;
-    //
-    //         return (
-    //           <ListItem key={index}
-    //             style={{
-    //               opacity: isRevealed ? 1.0 : 0.1
-    //             }}
-    //           >
-    //             <span onClick={() => {
-    //               if (!isRevealed) {
-    //                 this.setState({
-    //                   revealedAnswers: [...this.state.revealedAnswers, index]
-    //                 });
-    //               }
-    //             }}
-    //             >{answer.title} - {answer.people}</span>
-    //           </ListItem>
-    //         );
-    //       })
-    //     }
-    //   </List>
-    // );
   }
 }
+
+RevealableAnswers.propTypes = {
+  answers: PropTypes.array.isRequired,
+  players: PropTypes.object.isRequired,
+  revealedAnswers: PropTypes.object.isRequired,
+  selectionsByPlayers: PropTypes.object.isRequired,
+  toggleAnswer: PropTypes.func.isRequired,
+  toggleRevealAnswer: PropTypes.func.isRequired
+};
 
 const AnswerTitle = styled.span`
   opacity: 0.1;
