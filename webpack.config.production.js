@@ -3,49 +3,58 @@
 const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CleanWebpackPlugin = require("clean-webpack-plugin");
 
 module.exports = {
-  entry: [
-    "babel-polyfill",
-    "./index"
-  ],
+  mode: 'production',
+  entry: {
+    app: './src/index.js'
+  },
+  optimization: {
+    minimize: true
+  },
+  devServer: {
+    contentBase: path.join(__dirname, 'docs'),
+    port: 9000
+  },
   output: {
-    path: path.join(__dirname, "/docs/"),
+    path: path.join(__dirname, "docs"),
     filename: "bundle.js",
-    publicPath: "./"
   },
   plugins: [
+    new CleanWebpackPlugin(['docs']),
     new webpack.DefinePlugin({
       "process.env": {
         "NODE_ENV": JSON.stringify("production")
       }
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      compressor: {
-        warnings: false
-      }
-    }),
     new HtmlWebpackPlugin({
-      template: './index.html'
+      template: './src/index.html'
     })
   ],
   module: {
-    loaders: [{
-      test: /\.md$/,
-      loader: "html-loader!markdown-loader?gfm=false"
-    }, {
-      test: /\.(js|jsx)$/,
-      exclude: /node_modules/,
-      loader: "babel-loader"
-    }, {
-      test: /\.css$/,
-      loader: "style-loader!css-loader"
-    }, {
-      test: /\.(png|jpg|gif)$/,
-      loader: "url-loader?limit=8192"
-    }, {
-      test: /\.svg$/,
-      loader: "url-loader?limit=10000&mimetype=image/svg+xml"
-    }]
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /(node_modules)/,
+        use: [
+          {
+            loader: 'babel-loader'
+          }
+        ]
+      },
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: "style-loader"
+          },
+          {
+            loader: "raw-loader"
+          }
+        ]
+      }
+    ]
   }
 };
+

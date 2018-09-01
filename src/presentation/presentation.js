@@ -1,5 +1,5 @@
 // Import React
-import React from 'react';
+import React from "react";
 
 // Import Spectacle Core tags
 import {
@@ -9,68 +9,68 @@ import {
   List,
   Slide,
   Notes
-} from 'spectacle';
+} from "spectacle";
 
 // Import theme
-import createTheme from 'spectacle/lib/themes/default';
-import { RevealableAnswers } from './revealable-answers';
+import createTheme from "spectacle/lib/themes/default";
+import { RevealableAnswers } from "./revealable-answers";
 
 // Require CSS
-require('normalize.css');
+require("../../node_modules/normalize.css/normalize.css");
 
 const theme = createTheme({
-  primary: 'white',
-  secondary: '#1F2022',
-  tertiary: '#03A9FC',
-  quaternary: '#CECECE'
+  primary: "white",
+  secondary: "#1F2022",
+  tertiary: "#03A9FC",
+  quaternary: "#CECECE"
 }, {
-  primary: 'Montserrat',
-  secondary: 'Helvetica'
+  primary: "Montserrat",
+  secondary: "Helvetica"
 });
 
 const PLAYERS = {
-  'bettina': {
-    name: 'Bettina',
-    emoji: '👰'
+  "bettina": {
+    name: "Bettina",
+    emoji: "👰"
   },
-  'nick': {
-    name: 'Nick',
-    emoji: '🤵'
+  "nick": {
+    name: "Nick",
+    emoji: "🤵"
   }
 };
 
 const QUESTIONS = [
   {
-    'question': 'Nennen sie die Lieblingsfarbe von Nick',
-    'answers': [
+    "question": "Nennen sie die Lieblingsfarbe von Nick",
+    "answers": [
       {
-        'title': 'Grün',
-        'people': 8
+        "title": "Grün",
+        "people": 8
       },
       {
-        'title': 'Blau',
-        'people': 6
+        "title": "Blau",
+        "people": 6
       },
       {
-        'title': 'Violet',
-        'people': 6
+        "title": "Violet",
+        "people": 6
       }
     ]
   },
   {
-    'question': 'Nennen sie eine Tätigkeit die Nick besser kann als Bettina',
-    'answers': [
+    "question": "Nennen sie eine Tätigkeit die Nick besser kann als Bettina",
+    "answers": [
       {
-        'title': 'Waschen',
-        'people': 8
+        "title": "Waschen",
+        "people": 8
       },
       {
-        'title': 'Schlafen',
-        'people': 6
+        "title": "Schlafen",
+        "people": 6
       },
       {
-        'title': 'Kochen',
-        'people': 6
+        "title": "Kochen",
+        "people": 6
       }
     ]
   }
@@ -93,7 +93,7 @@ const renderSlide = (props) => {
   } = questionContainer;
 
   return (
-    <Slide transition={['fade']} key={index}>
+    <Slide transition={["fade"]} key={index}>
       <Heading size={3}>{question}</Heading>
       <RevealableAnswers
         answers={answers}
@@ -149,7 +149,7 @@ export default class Presentation extends React.Component {
   toggleRevealAnswer(questionIndex, answerIndex) {
     const newRevealedQuestionAnswers = {
       ...
-        this.state.revealedAnswers[questionIndex],
+      this.state.revealedAnswers[questionIndex],
       [answerIndex]: !this.state.revealedAnswers[questionIndex][answerIndex]
     };
     const newRevealedAnswers = [
@@ -165,13 +165,13 @@ export default class Presentation extends React.Component {
 
   render() {
     return (
-      <Deck transition={['zoom', 'slide']} transitionDuration={500} theme={theme}>
-        <Slide transition={['zoom']} bgColor="primary">
+      <Deck transition={["zoom", "slide"]} transitionDuration={500} theme={theme}>
+        <Slide transition={["zoom"]} bgColor="primary">
           <Heading size={1} fit caps lineHeight={1} textColor="secondary">
             👰 Das Hochzeitsduell 🤵
           </Heading>
         </Slide>
-        <Slide transition={['zoom']} bgColor="primary">
+        <Slide transition={["zoom"]} bgColor="primary">
           <Heading size={1} fit caps lineHeight={1} textColor="secondary">
             Wir haben 50 Hochzeitsgäste gefragt.
             <br />Das sind ihre Antworten:

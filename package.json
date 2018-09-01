@@ -9,7 +9,7 @@
     "lint": "eslint --ext .js,.jsx .",
     "deploy": "npm run clean & npm run build && surge -p .",
     "export": "spectacle-renderer --delay 3000",
-    "start": "cross-env NODE_ENV=development node server.js"
+    "start": "webpack-dev-server"
   },
   "author": "",
   "license": "MIT",
@@ -38,6 +38,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "babel-runtime": "^6.26.0",
+    "clean-webpack-plugin": "^0.1.19",
     "cross-env": "^5.1.0",
     "css-loader": "^0.28.7",
     "eslint": "^4.9.0",
@@ -59,9 +60,11 @@
     "style-loader": "^0.19.0",
     "surge": "latest",
     "url-loader": "^0.6.2",
-    "webpack": "3.8.1",
+    "webpack": "^4.17.1",
+    "webpack-bundle-analyzer": "^2.13.1",
+    "webpack-cli": "^3.1.0",
     "webpack-dev-middleware": "^1.12.0",
-    "webpack-dev-server": "^2.9.3",
+    "webpack-dev-server": "^3.1.7",
     "webpack-hot-middleware": "^2.20.0"
   }
 }
