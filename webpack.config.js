@@ -20,7 +20,6 @@ module.exports = {
     filename: "bundle.js",
   },
   plugins: [
-    new CleanWebpackPlugin(['docs']),
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       template: './src/index.html'
