@@ -26,7 +26,7 @@ export default class Presentation extends React.Component {
     const initialSelections = QUESTIONS.map(() => {
       const selectionByPlayer = {};
       Object.keys(PLAYERS).forEach((playerId) => {
-        selectionByPlayer[playerId] = { 1: true, 2: true };
+        selectionByPlayer[playerId] = {};
       });
       return selectionByPlayer;
     });
