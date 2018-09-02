@@ -6,9 +6,5 @@ export const PLAYERS = {
   "nick": {
     name: "Nick",
     emoji: "🤵"
-  },
-  "julia": {
-    name: "Nick",
-    emoji: "J"
   }
 };

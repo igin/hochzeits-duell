@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Notes, Heading } from "spectacle";
 import { RevealableAnswers } from "./revealable-answers";
+import styled from "styled-components";
 
 export const QuestionSlide = (props) => {
   const {
@@ -18,8 +19,8 @@ export const QuestionSlide = (props) => {
   } = questionContainer;
 
   return (
-    <div>
-      <Heading size={3}>{question}</Heading>
+    <SlideContainer>
+      <Heading size={5}>{question}</Heading>
       <RevealableAnswers
         answers={answers}
         players={players}
@@ -38,7 +39,7 @@ export const QuestionSlide = (props) => {
           })}
         </ol>
       </Notes>
-    </div>
+    </SlideContainer>
   );
 };
 
@@ -51,3 +52,11 @@ QuestionSlide.propTypes = {
   toggleAnswer: PropTypes.func.isRequired,
   toggleRevealAnswer: PropTypes.func.isRequired
 };
+
+const SlideContainer = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-content: space-between;
+  align-items: stretch;
+`;

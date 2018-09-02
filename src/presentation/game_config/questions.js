@@ -13,6 +13,14 @@ export const QUESTIONS = [
       {
         "title": "Violet",
         "people": 6
+      },
+      {
+        "title": "Pink",
+        "people": 3
+      },
+      {
+        "title": "Rot",
+        "people": 2
       }
     ]
   },
@@ -30,6 +38,14 @@ export const QUESTIONS = [
       {
         "title": "Kochen",
         "people": 6
+      },
+      {
+        "title": "Laufen",
+        "people": 3
+      },
+      {
+        "title": "Fragen stellen",
+        "people": 1
       }
     ]
   }

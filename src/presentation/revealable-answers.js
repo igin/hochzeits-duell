@@ -17,15 +17,15 @@ export class RevealableAnswers extends React.Component {
 
     const playerHeaders = Object.keys(players).map((playerId) => players[playerId].emoji);
     const headers = [
-      "Reveal",
       "",
       "Antwort",
       "👥",
-      ...playerHeaders
+      ...playerHeaders,
+      ""
     ];
 
     return (
-      <table>
+      <AnswerTable>
         <thead>
           <tr>
             {headers.map((header, index) => <th key={index}>{header}</th>)}
@@ -40,7 +40,6 @@ export class RevealableAnswers extends React.Component {
 
               return (
                 <tr key={answerIndex} className={revealed ? "visible" : ""}>
-                  <td onClick={() => toggleRevealAnswer(answerIndex)}>Reveal</td>
                   <td>{answerIndex + 1}</td>
                   <td><AnswerTitle>{answer.title}</AnswerTitle></td>
                   <td>{answer.people}</td>
@@ -49,16 +48,21 @@ export class RevealableAnswers extends React.Component {
 
                     return (
                       <td key={playerIndex} onClick={() => toggleAnswer(playerId, answerIndex)}>
-                        {answerSelectedByPlayer && players[playerId].emoji}
+                        <EmojiButton selected={answerSelectedByPlayer}>
+                          {players[playerId].emoji}
+                        </EmojiButton>
                       </td>
                     );
                   })}
+                  <td>
+                    <RevealButton onClick={() => toggleRevealAnswer(answerIndex)}>👁️</RevealButton>
+                  </td>
                 </tr>
               );
             })
           }
         </tbody>
-      </table>
+      </AnswerTable>
     );
   }
 }
@@ -72,11 +76,59 @@ RevealableAnswers.propTypes = {
   toggleRevealAnswer: PropTypes.func.isRequired
 };
 
-const AnswerTitle = styled.span`
+const RevealButton = styled.button`
+  border: none;
+  outline: none;
+  
   opacity: 0.1;
+  background-color: aliceblue;
+  border-radius: 50%;
+  text-align: center;
+  
+  transition: opacity 1s;
+  
+  &:hover {
+    opacity: 0.8;
+  }
+`;
+
+const EmojiButton = styled.button`
+  border: none;
+  background: none;
+  outline: none;
+  transition: opacity 0.3s;
+  opacity: ${(props) => props.selected ? 1.0 : 0.0};
+  
+  &:hover {
+    opacity: ${(props) => props.selected ? 1.0 : 0.3};
+  }
+`;
+
+const AnswerTitle = styled.span`
+  opacity: 0;
+  transition: opacity 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-origin: center center;
   
   .visible & {
     opacity: 1.0;
+    -webkit-transform: scale3d(5, 5, 5);
+    transform: rotate(180deg);
   }
 `;
+
+const AnswerTable = styled.table`
+  flex: 1;
+  margin-top: 150px;
+  
+  td {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: none;
+  }
+  
+  tr:nth-child(even) {
+    background-color: aliceblue;
+  }
+`;
+
 
