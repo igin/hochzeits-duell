@@ -3,7 +3,7 @@ export const QUESTIONS = [
     "question": "Nennen sie die Lieblingsfarbe von Nick",
     "answers": [
       {
-        "title": "Grün",
+        "title": "Weiss",
         "people": 8
       },
       {

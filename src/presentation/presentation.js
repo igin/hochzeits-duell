@@ -1,5 +1,6 @@
 import React from "react";
 import { Deck, Heading, Slide } from "spectacle";
+import md5 from "blueimp-md5";
 
 import createTheme from "spectacle/lib/themes/default";
 import { QUESTIONS } from "./game_config/questions";
@@ -31,10 +32,34 @@ export default class Presentation extends React.Component {
       return selectionByPlayer;
     });
 
-    this.state = {
-      selectionsByPlayers: initialSelections,
-      revealedAnswers: QUESTIONS.map(() => ({}))
-    };
+    const currentSetupHash = md5(JSON.stringify(QUESTIONS)) + md5(JSON.stringify(PLAYERS));
+    const storedSetupHash = localStorage.getItem("presentation_setup_hash");
+
+    const storedState = localStorage.getItem("presentation_state");
+    if (storedState && currentSetupHash === storedSetupHash) {
+      this.state = JSON.parse(storedState);
+    } else {
+      localStorage.setItem("presentation_setup_hash", currentSetupHash);
+
+      this.state = {
+        selectionsByPlayers: initialSelections,
+        revealedAnswers: QUESTIONS.map(() => ({}))
+      };
+
+      localStorage.setItem("presentation_state", JSON.stringify(this.state));
+    }
+  }
+
+  componentDidMount() {
+    window.addEventListener("storage", (event) => {
+      if (event.key === "presentation_state") {
+        this.setState(JSON.parse(localStorage.getItem("presentation_state")));
+      }
+    });
+  }
+
+  componentDidUpdate() {
+    localStorage.setItem("presentation_state", JSON.stringify(this.state));
   }
 
   toggleQuestionAnswerForPlayer(questionIndex, answerIndex, playerId) {
