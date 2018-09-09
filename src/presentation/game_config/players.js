@@ -1,10 +1,12 @@
 export const PLAYERS = {
   "bettina": {
     name: "Bettina",
-    emoji: "👰"
+    emoji: "👰",
+    color: "#E6B4F5"
   },
   "nick": {
     name: "Nick",
-    emoji: "🤵"
+    emoji: "🤵",
+    color: "#5EDEF5"
   }
 };

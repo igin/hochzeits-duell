@@ -9,7 +9,7 @@
     "lint": "eslint --ext .js,.jsx .",
     "deploy": "npm run clean & npm run build && surge -p .",
     "export": "spectacle-renderer --delay 3000",
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server --hot"
   },
   "author": "",
   "license": "MIT",
@@ -55,7 +55,7 @@
     "markdown-loader": "^2.0.1",
     "node-libs-browser": "^2.0.0",
     "raw-loader": "^0.5.1",
-    "react-hot-loader": "^3.1.1",
+    "react-hot-loader": "^4.3.6",
     "react-transform-catch-errors": "^1.0.2",
     "redbox-react": "^1.5.0",
     "rimraf": "^2.6.2",

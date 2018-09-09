@@ -11,12 +11,17 @@ export const QuestionSlide = (props) => {
     selectionsByPlayers,
     toggleAnswer,
     toggleRevealAnswer,
-    revealedAnswers
+    revealedAnswers,
+    partialResults
   } = props;
   const {
     question,
     answers
   } = questionContainer;
+
+  const totalPoints = Math.max(Object.keys(partialResults)
+    .map((playerId) => partialResults[playerId])
+    .reduce((a, b) => a + b, 0), 1);
 
   return (
     <SlideContainer>
@@ -29,6 +34,15 @@ export const QuestionSlide = (props) => {
         toggleRevealAnswer={toggleRevealAnswer}
         revealedAnswers={revealedAnswers}
       />
+      <PartialResultBarContainer>
+        {Object.keys(partialResults).map((playerId) => (
+          <PartialResultBar
+            key={playerId}
+            color={players[playerId].color}
+            percentage={partialResults[playerId] / totalPoints}
+          />
+        ))}
+      </PartialResultBarContainer>
       <Notes>
         <h4>Answers:</h4>
         <ol>
@@ -38,13 +52,18 @@ export const QuestionSlide = (props) => {
             );
           })}
         </ol>
+        <h4>Zwischenstand vor dieser Frage: </h4>
+        {Object.keys(partialResults).map((playerId) => (
+          <p key={playerId}>{playerId} - {partialResults[playerId]}</p>
+        ))}
       </Notes>
     </SlideContainer>
   );
 };
 
 QuestionSlide.propTypes = {
-  players: PropTypes.array.isRequired,
+  partialResults: PropTypes.object.isRequired,
+  players: PropTypes.object.isRequired,
   questionContainer: PropTypes.object.isRequired,
   questionIndex: PropTypes.number.isRequired,
   revealedAnswers: PropTypes.object.isRequired,
@@ -59,4 +78,19 @@ const SlideContainer = styled.div`
   flex-direction: column;
   align-content: space-between;
   align-items: stretch;
+`;
+
+const PartialResultBarContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-top: 100px;
+  border-radius: 20px;
+  opacity: 0.3;
+  overflow: hidden;
+`;
+
+const PartialResultBar = styled.div`
+  height: 20px;
+  background-color: ${(props) => props.color};
+  flex: ${(props) => props.percentage};
 `;

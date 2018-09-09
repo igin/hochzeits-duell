@@ -1,11 +1,14 @@
 import React from "react";
 import { Deck, Heading, Slide } from "spectacle";
 import md5 from "blueimp-md5";
+import { hot } from "react-hot-loader";
 
 import createTheme from "spectacle/lib/themes/default";
 import { QUESTIONS } from "./game_config/questions";
 import { PLAYERS } from "./game_config/players";
 import { QuestionSlide } from "./question-slide";
+import { ResultsSlide } from "./results-slide";
+import { computeTotalPointsPerPlayer, computePartialPointsUntilQuestion } from "./game-state";
 
 require("../../node_modules/normalize.css/normalize.css");
 
@@ -20,17 +23,9 @@ const theme = createTheme({
 });
 
 
-export default class Presentation extends React.Component {
+class Presentation extends React.Component {
   constructor() {
     super();
-
-    const initialSelections = QUESTIONS.map(() => {
-      const selectionByPlayer = {};
-      Object.keys(PLAYERS).forEach((playerId) => {
-        selectionByPlayer[playerId] = {};
-      });
-      return selectionByPlayer;
-    });
 
     const currentSetupHash = md5(JSON.stringify(QUESTIONS)) + md5(JSON.stringify(PLAYERS));
     const storedSetupHash = localStorage.getItem("presentation_setup_hash");
@@ -40,6 +35,14 @@ export default class Presentation extends React.Component {
       this.state = JSON.parse(storedState);
     } else {
       localStorage.setItem("presentation_setup_hash", currentSetupHash);
+
+      const initialSelections = QUESTIONS.map(() => {
+        const selectionByPlayer = {};
+        Object.keys(PLAYERS).forEach((playerId) => {
+          selectionByPlayer[playerId] = {};
+        });
+        return selectionByPlayer;
+      });
 
       this.state = {
         selectionsByPlayers: initialSelections,
@@ -113,6 +116,7 @@ export default class Presentation extends React.Component {
           QUESTIONS.map((question, questionIndex) => (
             <Slide transition={["fade"]} key={questionIndex}>
               <QuestionSlide
+                partialResults={computePartialPointsUntilQuestion(PLAYERS, this.state.selectionsByPlayers, questionIndex)}
                 questionContainer={question}
                 questionIndex={questionIndex}
                 players={PLAYERS}
@@ -121,9 +125,24 @@ export default class Presentation extends React.Component {
                 toggleRevealAnswer={(answerIndex) => this.toggleRevealAnswer(questionIndex, answerIndex)}
                 revealedAnswers={this.state.revealedAnswers[questionIndex]}
               />
-            </Slide>))
+            </Slide>
+          ))
         }
+        <Slide>
+          <Heading>
+            Und der Sieger ist:
+          </Heading>
+        </Slide>
+        <Slide>
+          <ResultsSlide
+            players={PLAYERS}
+            playerPoints={computeTotalPointsPerPlayer(PLAYERS, this.state.selectionsByPlayers)}
+          />
+        </Slide>
       </Deck>
     );
   }
 }
+
+
+export default hot(module)(() => <Presentation />);
