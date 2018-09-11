@@ -1,6 +1,7 @@
 import React from "react";
 import { Deck, Heading, Slide } from "spectacle";
 import md5 from "blueimp-md5";
+import styled from "styled-components";
 import { hot } from "react-hot-loader";
 
 import createTheme from "spectacle/lib/themes/default";
@@ -36,21 +37,34 @@ class Presentation extends React.Component {
     } else {
       localStorage.setItem("presentation_setup_hash", currentSetupHash);
 
-      const initialSelections = QUESTIONS.map(() => {
-        const selectionByPlayer = {};
-        Object.keys(PLAYERS).forEach((playerId) => {
-          selectionByPlayer[playerId] = {};
-        });
-        return selectionByPlayer;
-      });
-
-      this.state = {
-        selectionsByPlayers: initialSelections,
-        revealedAnswers: QUESTIONS.map(() => ({}))
-      };
+      this.state = this.makeInitialState();
 
       localStorage.setItem("presentation_state", JSON.stringify(this.state));
     }
+  }
+
+  reInitializeState() {
+    const currentSetupHash = md5(JSON.stringify(QUESTIONS)) + md5(JSON.stringify(PLAYERS));
+    localStorage.setItem("presentation_setup_hash", currentSetupHash);
+
+    this.setState(this.makeInitialState());
+
+    localStorage.setItem("presentation_state", JSON.stringify(this.state));
+  }
+
+  makeInitialState() {
+    const initialSelections = QUESTIONS.map(() => {
+      const selectionByPlayer = {};
+      Object.keys(PLAYERS).forEach((playerId) => {
+        selectionByPlayer[playerId] = {};
+      });
+      return selectionByPlayer;
+    });
+
+    return {
+      selectionsByPlayers: initialSelections,
+      revealedAnswers: QUESTIONS.map(() => ({}))
+    };
   }
 
   componentDidMount() {
@@ -94,55 +108,73 @@ class Presentation extends React.Component {
 
   render() {
     return (
-      <Deck
-        transition={["zoom", "slide"]}
-        transitionDuration={500}
-        theme={theme}
-        align="flex-start flex-start"
-      >
-        <Slide transition={["zoom"]} bgColor="primary">
-          <Heading size={1} fit caps lineHeight={1} textColor="secondary">
-            👰 Das Hochzeitsduell 🤵
-          </Heading>
-        </Slide>
-        <Slide transition={["zoom"]} bgColor="primary">
-          <Heading size={1} fit caps lineHeight={1} textColor="secondary">
-            Wir haben 50 Hochzeitsgäste gefragt.
-            <br />Das sind ihre Antworten:
-          </Heading>
-        </Slide>
+      <div>
+        <Deck
+          transition={["zoom", "slide"]}
+          transitionDuration={500}
+          theme={theme}
+          align="flex-start flex-start"
+        >
+          <Slide transition={["zoom"]} bgColor="primary">
+            <Heading size={1} fit caps lineHeight={1} textColor="secondary">
+              👰 Das Hochzeitsduell 🤵
+            </Heading>
 
-        {
-          QUESTIONS.map((question, questionIndex) => (
-            <Slide transition={["fade"]} key={questionIndex}>
-              <QuestionSlide
-                partialResults={computePartialPointsUntilQuestion(PLAYERS, this.state.selectionsByPlayers, questionIndex)}
-                questionContainer={question}
-                questionIndex={questionIndex}
-                players={PLAYERS}
-                selectionsByPlayers={this.state.selectionsByPlayers[questionIndex]}
-                toggleAnswer={(playerId, answerIndex) => this.toggleQuestionAnswerForPlayer(questionIndex, answerIndex, playerId)}
-                toggleRevealAnswer={(answerIndex) => this.toggleRevealAnswer(questionIndex, answerIndex)}
-                revealedAnswers={this.state.revealedAnswers[questionIndex]}
-              />
-            </Slide>
-          ))
-        }
-        <Slide>
-          <Heading>
-            Und der Sieger ist:
-          </Heading>
-        </Slide>
-        <Slide>
-          <ResultsSlide
-            players={PLAYERS}
-            playerPoints={computeTotalPointsPerPlayer(PLAYERS, this.state.selectionsByPlayers)}
-          />
-        </Slide>
-      </Deck>
+          </Slide>
+          <Slide transition={["zoom"]} bgColor="primary">
+            <Heading size={1} fit caps lineHeight={1} textColor="secondary">
+              Wir haben 50 Hochzeitsgäste gefragt.
+              <br />Das sind ihre Antworten:
+            </Heading>
+          </Slide>
+
+          {
+            QUESTIONS.map((question, questionIndex) => (
+              <Slide transition={["fade"]} key={questionIndex}>
+                <QuestionSlide
+                  partialResults={computePartialPointsUntilQuestion(PLAYERS, this.state.selectionsByPlayers, questionIndex)}
+                  questionContainer={question}
+                  questionIndex={questionIndex}
+                  players={PLAYERS}
+                  selectionsByPlayers={this.state.selectionsByPlayers[questionIndex]}
+                  toggleAnswer={(playerId, answerIndex) => this.toggleQuestionAnswerForPlayer(questionIndex, answerIndex, playerId)}
+                  toggleRevealAnswer={(answerIndex) => this.toggleRevealAnswer(questionIndex, answerIndex)}
+                  revealedAnswers={this.state.revealedAnswers[questionIndex]}
+                />
+              </Slide>
+            ))
+          }
+          <Slide>
+            <Heading>
+              Und der Sieger ist:
+            </Heading>
+          </Slide>
+          <Slide>
+            <ResultsSlide
+              players={PLAYERS}
+              playerPoints={computeTotalPointsPerPlayer(PLAYERS, this.state.selectionsByPlayers)}
+            />
+          </Slide>
+        </Deck>
+        <ResetButton
+          onClick={() => this.reInitializeState()}
+        >
+          🔄
+        </ResetButton>
+      </div>
     );
   }
 }
 
+const ResetButton = styled.button`
+  background: none;
+  outline: none;
+  border: none;
+  margin-top: 200px;
+  opacity: 0.2;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+`;
 
 export default hot(module)(() => <Presentation />);
