@@ -2,7 +2,7 @@
 
 Game developed specifically for the wedding of Bettina & Nick. 
 
-The game is based on the TV quiz show 5 gegen 5.
+The game is based on the TV quiz show 5 gegen 5 (Familienduell).
 
 # Running
 
