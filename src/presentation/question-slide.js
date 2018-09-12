@@ -22,10 +22,10 @@ export const QuestionSlide = (props) => {
   const totalPoints = Math.max(Object.keys(partialResults)
     .map((playerId) => partialResults[playerId])
     .reduce((a, b) => a + b, 0), 1);
-    
- const playWrongAnswer = () => {
-    var audio = new Audio('negativeAnswer.mp3');
-	audio.play();
+
+  const playWrongAnswer = () => {
+    const audio = new Audio("negativeAnswer.mp3");
+    audio.play();
   };
 
   return (
@@ -39,10 +39,6 @@ export const QuestionSlide = (props) => {
         toggleRevealAnswer={toggleRevealAnswer}
         revealedAnswers={revealedAnswers}
       />
-      
-     <WrongAnswerButton onClick={playWrongAnswer}>
-     	<img src="./wrongButton.png" alt="My_Logo" width="90" height="30"/>
-     </WrongAnswerButton>
       <PartialResultBarContainer>
         {Object.keys(partialResults).map((playerId) => (
           <PartialResultBar
@@ -65,6 +61,9 @@ export const QuestionSlide = (props) => {
         {Object.keys(partialResults).map((playerId) => (
           <p key={playerId}>{playerId} - {partialResults[playerId]}</p>
         ))}
+        <WrongAnswerButton onClick={playWrongAnswer}>
+          <img src="./wrongButton.png" alt="My_Logo" width="90" height="30" />
+        </WrongAnswerButton>
       </Notes>
     </SlideContainer>
   );
