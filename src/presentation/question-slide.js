@@ -4,6 +4,9 @@ import { Notes, Heading } from "spectacle";
 import { RevealableAnswers } from "./revealable-answers";
 import styled from "styled-components";
 
+const negativeAnwer = require("./audio/negativeAnswer.mp3");
+
+
 export const QuestionSlide = (props) => {
   const {
     questionContainer,
@@ -24,7 +27,7 @@ export const QuestionSlide = (props) => {
     .reduce((a, b) => a + b, 0), 1);
 
   const playWrongAnswer = () => {
-    const audio = new Audio("negativeAnswer.mp3");
+    const audio = new Audio(negativeAnwer);
     audio.play();
   };
 

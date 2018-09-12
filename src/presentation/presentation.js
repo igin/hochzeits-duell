@@ -23,6 +23,7 @@ const theme = createTheme({
   secondary: "Helvetica"
 });
 
+const positiveAnswer = require("./audio/positiveAnswer.m4a");
 
 class Presentation extends React.Component {
   constructor() {
@@ -85,10 +86,10 @@ class Presentation extends React.Component {
     const selectedAnswers = newQuestionAnswers[playerId];
     selectedAnswers[answerIndex] = !selectedAnswers[answerIndex];
     if (selectedAnswers[answerIndex]) {
-        var audio = new Audio('positiveAnswer.m4a');
-		audio.play();
+      const audio = new Audio(positiveAnswer);
+      audio.play();
     }
-    
+
     newSelections[questionIndex] = newQuestionAnswers;
     this.setState({
       selectionsByPlayers: newSelections

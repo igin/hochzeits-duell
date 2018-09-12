@@ -45,6 +45,15 @@ module.exports = {
             loader: "raw-loader"
           }
         ]
+      },
+      {
+        test: /\.(png|jpg|gif|mp3|m4a)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {}
+          }
+        ]
       }
     ]
   }
