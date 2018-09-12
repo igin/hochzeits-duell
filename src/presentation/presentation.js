@@ -44,6 +44,19 @@ class Presentation extends React.Component {
     }
   }
 
+  componentDidMount() {
+    window.addEventListener("storage", (event) => {
+      if (event.key === "presentation_state") {
+        this.setState(JSON.parse(localStorage.getItem("presentation_state")));
+      }
+    });
+  }
+
+  componentDidUpdate() {
+    localStorage.setItem("presentation_state", JSON.stringify(this.state));
+  }
+
+
   reInitializeState() {
     const currentSetupHash = md5(JSON.stringify(QUESTIONS)) + md5(JSON.stringify(PLAYERS));
     localStorage.setItem("presentation_setup_hash", currentSetupHash);
@@ -66,18 +79,6 @@ class Presentation extends React.Component {
       selectionsByPlayers: initialSelections,
       revealedAnswers: QUESTIONS.map(() => ({}))
     };
-  }
-
-  componentDidMount() {
-    window.addEventListener("storage", (event) => {
-      if (event.key === "presentation_state") {
-        this.setState(JSON.parse(localStorage.getItem("presentation_state")));
-      }
-    });
-  }
-
-  componentDidUpdate() {
-    localStorage.setItem("presentation_state", JSON.stringify(this.state));
   }
 
   toggleQuestionAnswerForPlayer(questionIndex, answerIndex, playerId) {

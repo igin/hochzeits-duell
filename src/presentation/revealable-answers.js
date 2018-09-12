@@ -38,10 +38,12 @@ export class RevealableAnswers extends React.Component {
                 .some((playerId) => selectionsByPlayers[playerId][answerIndex]);
               const revealed = aPlayerHasSelected || revealedAnswers[answerIndex];
 
+              const title = revealed ? answer.title : answer.title.split("").map(() => "_").join(" ");
+
               return (
                 <tr key={answerIndex} className={revealed ? "visible" : ""}>
                   <td>{answerIndex + 1}</td>
-                  <td><AnswerTitle>{answer.title}</AnswerTitle></td>
+                  <td><AnswerTitle>{title}</AnswerTitle></td>
                   <td>{answer.people}</td>
                   {Object.keys(players).map((playerId, playerIndex) => {
                     const answerSelectedByPlayer = selectionsByPlayers[playerId][answerIndex];
@@ -105,7 +107,7 @@ const EmojiButton = styled.button`
 `;
 
 const AnswerTitle = styled.span`
-  opacity: 0;
+  opacity: 0.3;
   transition: opacity 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   transform-origin: center center;
   
