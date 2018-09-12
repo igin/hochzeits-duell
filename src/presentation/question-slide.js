@@ -5,7 +5,7 @@ import { RevealableAnswers } from "./revealable-answers";
 import styled from "styled-components";
 
 const negativeAnwer = require("./audio/negativeAnswer.mp3");
-
+const wrongButtonImage = require("./images/wrongButton.png");
 
 export const QuestionSlide = (props) => {
   const {
@@ -65,7 +65,7 @@ export const QuestionSlide = (props) => {
           <p key={playerId}>{playerId} - {partialResults[playerId]}</p>
         ))}
         <WrongAnswerButton onClick={playWrongAnswer}>
-          <img src="./wrongButton.png" alt="My_Logo" width="90" height="30" />
+          <img src={wrongButtonImage} alt="My_Logo" width="90" height="30" />
         </WrongAnswerButton>
       </Notes>
     </SlideContainer>
