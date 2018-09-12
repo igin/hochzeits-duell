@@ -84,6 +84,11 @@ class Presentation extends React.Component {
     const newQuestionAnswers = { ...newSelections[questionIndex] };
     const selectedAnswers = newQuestionAnswers[playerId];
     selectedAnswers[answerIndex] = !selectedAnswers[answerIndex];
+    if (selectedAnswers[answerIndex]) {
+        var audio = new Audio('positiveAnswer.m4a');
+		audio.play();
+    }
+    
     newSelections[questionIndex] = newQuestionAnswers;
     this.setState({
       selectionsByPlayers: newSelections
